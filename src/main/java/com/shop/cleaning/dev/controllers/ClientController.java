@@ -2,6 +2,7 @@ package com.shop.cleaning.dev.controllers;
 
 import com.shop.cleaning.dev.dtos.DtoClientRequest;
 import com.shop.cleaning.dev.dtos.DtoClientResponse;
+import com.shop.cleaning.dev.dtos.DtoItemCartResponse;
 import com.shop.cleaning.dev.services.ClientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class ClientController {
     public ClientController(ClientService clientService) {
         this.clientService = clientService;
     }
+
+    //post client
     @PostMapping("/registers")
     public ResponseEntity<DtoClientRequest> createClient(@RequestBody @Valid DtoClientRequest clientRequest) {
         var userId = clientService.createClient(clientRequest);
@@ -34,18 +37,37 @@ public class ClientController {
         return ResponseEntity.created(URI.create("/clients/" + userId.toString())).build();
     }
 
+    @GetMapping("/{clientId}/items")
+    public ResponseEntity<List<DtoItemCartResponse>> getCartItems(@PathVariable UUID clientId) {
+        List<DtoItemCartResponse> cartItems = clientService.getProductsCartByClient(clientId);
+        return ResponseEntity.ok(cartItems);
+    }
 
+    //Get client by id
     @GetMapping("/{clientId}")
-        public ResponseEntity<DtoClientResponse> getInfosClientById(@PathVariable UUID clientId) {
+    public ResponseEntity<DtoClientResponse> getInfosClientById(@PathVariable UUID clientId) {
         DtoClientResponse clientDTO = clientService.getClientInfoById(clientId);
 
         return ResponseEntity.ok(clientDTO);
     }
 
+    //Get client all
     @GetMapping
     public ResponseEntity<List<DtoClientResponse>> getAllClients() {
         List<DtoClientResponse> clients = clientService.getAllClients();
         return ResponseEntity.ok(clients);
     }
+
+
+
+    //delete client by id
+    @DeleteMapping(value = "{clientId}")
+    public ResponseEntity<Void> deleteClientById(@PathVariable UUID clientId) {
+        clientService.deleteClientById(clientId);
+        return ResponseEntity.noContent().build();
+    }
+
+
+
 
 }
