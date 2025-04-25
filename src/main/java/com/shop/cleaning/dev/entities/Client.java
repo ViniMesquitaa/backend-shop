@@ -1,34 +1,51 @@
 package com.shop.cleaning.dev.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-@Getter
-@Setter
-@NoArgsConstructor
 
+@Setter
+@Getter
 @Entity
 @Table(name = "Cliente")
 public class Client {
     @Id
-    @GeneratedValue
     private UUID id;
 
     private String name;
     @Embedded
-    Address address;
+    private Address address;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Cart> cart;
 
+    @CreationTimestamp
+    private Instant creationTimesStamp;
+    @UpdateTimestamp
+    private Instant updateTimesStamp;
+
+
+    public Client(UUID id, String name, Address address, Instant creationTimesStamp, Instant updateTimesStamp) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.creationTimesStamp = Instant.now();
+        this.updateTimesStamp = Instant.now();
+    }
+
     public Client() {
 
     }
+
+
 
     public UUID getId() {
         return id;
@@ -36,6 +53,22 @@ public class Client {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public Instant getCreationTimesStamp() {
+        return creationTimesStamp;
+    }
+
+    public void setCreationTimesStamp(Instant creationTimesStamp) {
+        this.creationTimesStamp = creationTimesStamp;
+    }
+
+    public Instant getUpdateTimesStamp() {
+        return updateTimesStamp;
+    }
+
+    public void setUpdateTimesStamp(Instant updateTimesStamp) {
+        this.updateTimesStamp = updateTimesStamp;
     }
 
     public String getName() {
