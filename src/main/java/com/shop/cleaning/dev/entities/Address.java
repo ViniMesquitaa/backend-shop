@@ -1,6 +1,7 @@
 package com.shop.cleaning.dev.entities;
 
 import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,8 +12,11 @@ import lombok.Setter;
 @Embeddable
 public class Address {
     private String cep;
+    @NotBlank
     private String street;
+    @NotBlank
     private String number;
+    @NotBlank
     private String city;
 
     public String getCep() {
