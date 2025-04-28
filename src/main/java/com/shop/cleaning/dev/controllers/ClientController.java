@@ -1,15 +1,12 @@
 package com.shop.cleaning.dev.controllers;
 
-import com.shop.cleaning.dev.dtos.DtoClientRequest;
-import com.shop.cleaning.dev.dtos.DtoClientResponse;
-import com.shop.cleaning.dev.dtos.DtoItemCartResponse;
+import com.shop.cleaning.dev.dtos.requestDtos.DtoClientRequest;
+import com.shop.cleaning.dev.dtos.responseDtos.ClientUpdateDtoResponse;
+import com.shop.cleaning.dev.dtos.responseDtos.DtoClientResponse;
 import com.shop.cleaning.dev.services.ClientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -29,18 +26,12 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    //post client
+    //registers clients
     @PostMapping("/registers")
     public ResponseEntity<DtoClientRequest> createClient(@RequestBody @Valid DtoClientRequest clientRequest) {
         var userId = clientService.createClient(clientRequest);
 
         return ResponseEntity.created(URI.create("/clients/" + userId.toString())).build();
-    }
-
-    @GetMapping("/{clientId}/items")
-    public ResponseEntity<List<DtoItemCartResponse>> getCartItems(@PathVariable UUID clientId) {
-        List<DtoItemCartResponse> cartItems = clientService.getProductsCartByClient(clientId);
-        return ResponseEntity.ok(cartItems);
     }
 
     //Get client by id
@@ -59,12 +50,19 @@ public class ClientController {
     }
 
 
-
     //delete client by id
     @DeleteMapping(value = "{clientId}")
     public ResponseEntity<Void> deleteClientById(@PathVariable UUID clientId) {
         clientService.deleteClientById(clientId);
         return ResponseEntity.noContent().build();
+    }
+
+    //edit infos clients
+    @PutMapping("/edit/{clientId}")
+    public ResponseEntity<ClientUpdateDtoResponse> editClientById(@PathVariable UUID clientId, @RequestBody @Valid DtoClientRequest clientRequest) {
+        ClientUpdateDtoResponse clientResponse = clientService.updateClients(clientId, clientRequest);
+
+        return ResponseEntity.ok(clientResponse);
     }
 
 
