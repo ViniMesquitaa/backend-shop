@@ -1,9 +1,8 @@
-package com.shop.cleaning.dev.entities;
+package com.shop.cleaning.dev.entities.utilClass;
 
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
@@ -16,6 +15,8 @@ public class Address {
     private String street;
     @NotBlank
     private String number;
+
+    private String complement;
     @NotBlank
     private String city;
 
@@ -49,5 +50,13 @@ public class Address {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getComplement() {
+        return complement;
+    }
+
+    public void setComplement(String complement) {
+        this.complement = complement;
     }
 }
