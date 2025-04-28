@@ -11,11 +11,11 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class CartService {
+public class ItemCartService {
     private final ItemCartRepository itemCartRepository;
 
     @Autowired
-    public CartService(ItemCartRepository itemCartRepository) {
+    public ItemCartService(ItemCartRepository itemCartRepository) {
         this.itemCartRepository = itemCartRepository;
     }
 
@@ -31,6 +31,7 @@ public class CartService {
                                 itemCart.getProduct().getName(),
                                 itemCart.getProduct().getDescription(),
                                 itemCart.getProduct().getPrice(),
+                                itemCart.getProduct().getQuantityStock(),
                                 itemCart.getProduct().getAtivo()
                         ),
                         itemCart.getItemQuantity(),
