@@ -35,6 +35,11 @@ public class ItemCart {
     private Cart cartShop;
 
 
+    @ManyToOne
+    @JoinColumn(name = "requested_id")
+    private Requested requested;
+
+
     private BigDecimal precoUnitario;
 
     private BigDecimal totalItem;
