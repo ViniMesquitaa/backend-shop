@@ -1,8 +1,5 @@
-package com.shop.cleaning.dev.dtos;
+package com.shop.cleaning.dev.dtos.requestDtos;
 
-import jakarta.persistence.Id;
-import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.Negative;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
