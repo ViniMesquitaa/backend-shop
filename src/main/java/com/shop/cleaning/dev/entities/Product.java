@@ -1,33 +1,52 @@
 package com.shop.cleaning.dev.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@AllArgsConstructor
 
 @Entity
 @Table(name = "produtos")
 public class Product {
 
     @Id
-    @GeneratedValue
     private UUID id;
 
     private String img;
     private String name;
     private String description;
     private BigDecimal price;
-
     private boolean ativo;
-
     private Integer quantityStock;
+    private Instant creationTimesStamp;
+    private Instant updateTimesStamp;
+
+
+
+    public Product(UUID uuid, String img, String name, String description, BigDecimal price,Integer quantityStock,  boolean active, Instant creationTimesStamp, Instant updateTimesStamp) {
+        this.id = uuid;
+        this.img = img;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.quantityStock = quantityStock;
+        this.ativo = active;
+        this.creationTimesStamp = Instant.now();
+        this.updateTimesStamp = Instant.now();
+    }
+
+    public Product(){}
 
     public UUID getId() {
         return id;
