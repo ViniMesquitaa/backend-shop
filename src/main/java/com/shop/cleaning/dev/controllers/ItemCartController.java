@@ -1,7 +1,7 @@
 package com.shop.cleaning.dev.controllers;
 
 import com.shop.cleaning.dev.dtos.responseDtos.DtoItemCartResponse;
-import com.shop.cleaning.dev.services.CartService;
+import com.shop.cleaning.dev.services.ItemCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,17 +14,17 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping
-public class CartController {
-    private final CartService cartService;
+public class ItemCartController {
+    private final ItemCartService itemCartService;
 
     @Autowired
-    public CartController(CartService cartService) {
-        this.cartService = cartService;
+    public ItemCartController(ItemCartService itemCartService) {
+        this.itemCartService = itemCartService;
     }
 
     @GetMapping("items/{clientId}")
     public ResponseEntity<List<DtoItemCartResponse>> getCartItems(@PathVariable UUID clientId) {
-        List<DtoItemCartResponse> cartItems = cartService.getProductsCartByClient(clientId);
+        List<DtoItemCartResponse> cartItems = itemCartService.getProductsCartByClient(clientId);
         return ResponseEntity.ok(cartItems);
     }
 
