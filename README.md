@@ -22,7 +22,7 @@
 
 ## 🚀 Tecnologias Utilizadas
 
-- **[Java 17+](https://openjdk.org/)**
+- **[Java 21+](https://openjdk.org/)**
 - **[Spring Boot](https://spring.io/projects/spring-boot)**
 - **[Maven](https://maven.apache.org/)**
 - **[MySql](https://www.mysql.com/)**
