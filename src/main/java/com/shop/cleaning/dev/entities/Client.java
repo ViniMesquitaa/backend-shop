@@ -1,7 +1,8 @@
 package com.shop.cleaning.dev.entities;
 
+import com.shop.cleaning.dev.entities.enuns.UserTypeEnum;
+import com.shop.cleaning.dev.entities.utilClass.Address;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
