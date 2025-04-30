@@ -42,7 +42,7 @@ public class ClientController {
         return ResponseEntity.ok(clientDTO);
     }
 
-    //Get client all
+    //Get client all method
     @GetMapping
     public ResponseEntity<List<DtoClientResponse>> getAllClients() {
         List<DtoClientResponse> clients = clientService.getAllClients();
