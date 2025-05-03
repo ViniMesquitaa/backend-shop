@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.util.UUID;
 
-public record ClientUpdateDtoResponse(
+public record ClientUpdateResponseDTO(
         @Id
         UUID id,
         @NotBlank
