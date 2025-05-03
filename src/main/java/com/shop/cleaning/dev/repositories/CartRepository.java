@@ -1,12 +1,4 @@
 package com.shop.cleaning.dev.repositories;
 
-import com.shop.cleaning.dev.entities.Cart;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-import java.util.UUID;
-
-@Repository
-public interface CartRepository extends JpaRepository<Cart, UUID> {
-
-    }
+public interface CartRepository {
+}
