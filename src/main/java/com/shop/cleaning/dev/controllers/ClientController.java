@@ -1,8 +1,8 @@
 package com.shop.cleaning.dev.controllers;
 
-import com.shop.cleaning.dev.dtos.requestDtos.DtoClientRequest;
-import com.shop.cleaning.dev.dtos.responseDtos.ClientUpdateDtoResponse;
-import com.shop.cleaning.dev.dtos.responseDtos.DtoClientResponse;
+import com.shop.cleaning.dev.dtos.requestDtos.ClientRequestDTO;
+import com.shop.cleaning.dev.dtos.responseDtos.ClientUpdateResponseDTO;
+import com.shop.cleaning.dev.dtos.responseDtos.ClientResponseDTO;
 import com.shop.cleaning.dev.services.ClientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +15,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/clients")
-@CrossOrigin(origins = "http://127.0.0.1:5500") // ← permite requisições desse frontend
-
 public class ClientController {
 
     private final ClientService clientService;
@@ -28,7 +26,7 @@ public class ClientController {
 
     //registers clients
     @PostMapping("/registers")
-    public ResponseEntity<DtoClientRequest> createClient(@RequestBody @Valid DtoClientRequest clientRequest) {
+    public ResponseEntity<ClientRequestDTO> createClient(@RequestBody @Valid ClientRequestDTO clientRequest) {
         var userId = clientService.createClient(clientRequest);
 
         return ResponseEntity.created(URI.create("/clients/" + userId.toString())).build();
@@ -36,16 +34,16 @@ public class ClientController {
 
     //Get client by id
     @GetMapping("/{clientId}")
-    public ResponseEntity<DtoClientResponse> getInfosClientById(@PathVariable UUID clientId) {
-        DtoClientResponse clientDTO = clientService.getClientInfoById(clientId);
+    public ResponseEntity<ClientResponseDTO> getInfosClientById(@PathVariable UUID clientId) {
+        ClientResponseDTO clientDTO = clientService.getClientInfoById(clientId);
 
         return ResponseEntity.ok(clientDTO);
     }
 
     //Get client all method
     @GetMapping
-    public ResponseEntity<List<DtoClientResponse>> getAllClients() {
-        List<DtoClientResponse> clients = clientService.getAllClients();
+    public ResponseEntity<List<ClientResponseDTO>> getAllClients() {
+        List<ClientResponseDTO> clients = clientService.getAllClients();
         return ResponseEntity.ok(clients);
     }
 
@@ -59,8 +57,8 @@ public class ClientController {
 
     //edit infos clients
     @PutMapping("/edit/{clientId}")
-    public ResponseEntity<ClientUpdateDtoResponse> editClientById(@PathVariable UUID clientId, @RequestBody @Valid DtoClientRequest clientRequest) {
-        ClientUpdateDtoResponse clientResponse = clientService.updateClients(clientId, clientRequest);
+    public ResponseEntity<ClientUpdateResponseDTO> editClientById(@PathVariable UUID clientId, @RequestBody @Valid ClientRequestDTO clientRequest) {
+        ClientUpdateResponseDTO clientResponse = clientService.updateClients(clientId, clientRequest);
 
         return ResponseEntity.ok(clientResponse);
     }

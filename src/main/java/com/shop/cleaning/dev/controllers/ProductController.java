@@ -1,7 +1,7 @@
 package com.shop.cleaning.dev.controllers;
 
-import com.shop.cleaning.dev.dtos.requestDtos.ProductUpdateDtoRequest;
-import com.shop.cleaning.dev.dtos.responseDtos.DtoProductResponse;
+import com.shop.cleaning.dev.dtos.requestDtos.ProductUpdateRequestDTO;
+import com.shop.cleaning.dev.dtos.responseDtos.ProductResponseDTO;
 import com.shop.cleaning.dev.dtos.requestDtos.ProductRequestDTO;
 import com.shop.cleaning.dev.services.ItemCartService;
 import com.shop.cleaning.dev.services.ProductService;
@@ -33,22 +33,22 @@ public class ProductController {
 
     //get product by id
     @GetMapping( "/{productId}")
-    public ResponseEntity<DtoProductResponse> getProductsById(@PathVariable UUID productId) {
-        DtoProductResponse productResponse = productService.getProductById(productId);
+    public ResponseEntity<ProductResponseDTO> getProductsById(@PathVariable UUID productId) {
+        ProductResponseDTO productResponse = productService.getProductById(productId);
         return ResponseEntity.ok(productResponse);
     }
 
     //get product, but only active products
     @GetMapping("/active")
-    public ResponseEntity<List<DtoProductResponse>> getActiveProducts() {
-        List<DtoProductResponse> products = productService.getAllProductsActive();
+    public ResponseEntity<List<ProductResponseDTO>> getActiveProducts() {
+        List<ProductResponseDTO> products = productService.getAllProductsActive();
         return ResponseEntity.ok(products);
     }
 
     //get all products
     @GetMapping("/all")
-    public ResponseEntity<List<DtoProductResponse>> getAllProducts(){
-        List<DtoProductResponse> products = productService.getAllProducts();
+    public ResponseEntity<List<ProductResponseDTO>> getAllProducts(){
+        List<ProductResponseDTO> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
     }
 
@@ -71,8 +71,8 @@ public class ProductController {
     }
 
     @PutMapping("/edit/{idProduct}")
-    public ResponseEntity<DtoProductResponse> updateProduct(@PathVariable UUID idProduct,  @Valid @RequestBody ProductUpdateDtoRequest updateProduct){
-        DtoProductResponse updateDtoProduct = productService.updateInfoProduct(idProduct, updateProduct);
+    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable UUID idProduct, @Valid @RequestBody ProductUpdateRequestDTO updateProduct){
+        ProductResponseDTO updateDtoProduct = productService.updateInfoProduct(idProduct, updateProduct);
         return ResponseEntity.ok(updateDtoProduct);
     }
 
