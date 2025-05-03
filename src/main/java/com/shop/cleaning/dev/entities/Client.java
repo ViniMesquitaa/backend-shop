@@ -1,6 +1,5 @@
 package com.shop.cleaning.dev.entities;
 
-import com.shop.cleaning.dev.entities.enuns.UserTypeEnum;
 import com.shop.cleaning.dev.entities.utilClass.Address;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -40,12 +39,12 @@ public class Client {
         this.address = address;
         this.creationTimesStamp = Instant.now();
         this.updateTimesStamp = Instant.now();
+
     }
 
     public Client() {
 
     }
-
 
 
     public UUID getId() {

@@ -28,6 +28,44 @@ public class Cart {
     @OneToMany(mappedBy = "cartShop", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemCart> itemsCart;
 
-    private BigDecimal total;
+    @Column(name = "total", nullable = false)
+    private BigDecimal total = BigDecimal.ZERO;
 
+
+
+
+
+
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public List<ItemCart> getItemsCart() {
+        return itemsCart;
+    }
+
+    public void setItemsCart(List<ItemCart> itemsCart) {
+        this.itemsCart = itemsCart;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
 }

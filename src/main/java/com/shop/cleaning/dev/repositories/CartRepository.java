@@ -1,4 +1,12 @@
 package com.shop.cleaning.dev.repositories;
 
-public interface CartRepository {
+import com.shop.cleaning.dev.entities.Cart;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+import java.util.UUID;
+
+public interface CartRepository extends JpaRepository<Cart, UUID> {
+
+    Optional<Cart> findByClientId(UUID clientId);
 }

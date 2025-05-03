@@ -1,7 +1,7 @@
 package com.shop.cleaning.dev.services;
 
-import com.shop.cleaning.dev.dtos.responseDtos.DtoItemCartResponse;
-import com.shop.cleaning.dev.dtos.responseDtos.DtoProductResponse;
+import com.shop.cleaning.dev.dtos.responseDtos.ItemCartResponseDTO;
+import com.shop.cleaning.dev.dtos.responseDtos.ProductResponseDTO;
 import com.shop.cleaning.dev.repositories.ItemCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,11 +21,11 @@ public class ItemCartService {
 
 
     //visualizar os itens do carrinho por usuario individual
-    public List<DtoItemCartResponse> getProductsCartByClient(UUID clientId) {
+    public List<ItemCartResponseDTO> getProductsCartByClient(UUID clientId) {
         return itemCartRepository.findByClientId(clientId).stream()
-                .map(itemCart -> new DtoItemCartResponse(
+                .map(itemCart -> new ItemCartResponseDTO(
                         itemCart.getId(),
-                        new DtoProductResponse(
+                        new ProductResponseDTO(
                                 itemCart.getProduct().getId(),
                                 itemCart.getProduct().getImg(),
                                 itemCart.getProduct().getName(),

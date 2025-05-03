@@ -1,7 +1,7 @@
 package com.shop.cleaning.dev.services;
 
-import com.shop.cleaning.dev.dtos.requestDtos.ProductUpdateDtoRequest;
-import com.shop.cleaning.dev.dtos.responseDtos.DtoProductResponse;
+import com.shop.cleaning.dev.dtos.requestDtos.ProductUpdateRequestDTO;
+import com.shop.cleaning.dev.dtos.responseDtos.ProductResponseDTO;
 import com.shop.cleaning.dev.dtos.requestDtos.ProductRequestDTO;
 import com.shop.cleaning.dev.entities.Product;
 import com.shop.cleaning.dev.repositories.ProductRepository;
@@ -32,19 +32,19 @@ public class ProductService {
     }
 
     //get product by id
-    public DtoProductResponse getProductById(UUID productId) {
+    public ProductResponseDTO getProductById(UUID productId) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product Not Found"));
-        return new DtoProductResponse(product.getId(), product.getImg(), product.getName(), product.getDescription(), product.getPrice(), product.getQuantityStock(), product.getAtivo());
+        return new ProductResponseDTO(product.getId(), product.getImg(), product.getName(), product.getDescription(), product.getPrice(), product.getQuantityStock(), product.getAtivo());
     }
 
     //get product, but just the actives products
-    public List<DtoProductResponse> getAllProductsActive() {
-        return productRepository.findAllByAtivoTrue().stream().map(product -> new DtoProductResponse(product.getId(), product.getImg(), product.getName(), product.getDescription(), product.getPrice(), product.getQuantityStock(), product.getAtivo())).collect(Collectors.toList());
+    public List<ProductResponseDTO> getAllProductsActive() {
+        return productRepository.findAllByAtivoTrue().stream().map(product -> new ProductResponseDTO(product.getId(), product.getImg(), product.getName(), product.getDescription(), product.getPrice(), product.getQuantityStock(), product.getAtivo())).collect(Collectors.toList());
     }
 
     //get all products
-    public List<DtoProductResponse> getAllProducts() {
-        return productRepository.findAll().stream().map(product -> new DtoProductResponse(product.getId(), product.getImg(), product.getName(), product.getDescription(), product.getPrice(), product.getQuantityStock(), product.getAtivo())).collect(Collectors.toList());
+    public List<ProductResponseDTO> getAllProducts() {
+        return productRepository.findAll().stream().map(product -> new ProductResponseDTO(product.getId(), product.getImg(), product.getName(), product.getDescription(), product.getPrice(), product.getQuantityStock(), product.getAtivo())).collect(Collectors.toList());
     }
 
     //delete products by id
@@ -87,7 +87,7 @@ public class ProductService {
 
     //update infos product
     @Transactional
-    public DtoProductResponse updateInfoProduct(UUID id, ProductUpdateDtoRequest productUpdateDtoRequest) {
+    public ProductResponseDTO updateInfoProduct(UUID id, ProductUpdateRequestDTO productUpdateDtoRequest) {
         Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product Not Found"));
         product.setName(productUpdateDtoRequest.name());
         product.setDescription(productUpdateDtoRequest.description());
@@ -97,7 +97,7 @@ public class ProductService {
 
         Product updatedProduct = productRepository.save(product);
 
-        return new DtoProductResponse(updatedProduct.getId(), updatedProduct.getImg(), updatedProduct.getName(), updatedProduct.getDescription(), updatedProduct.getPrice(), updatedProduct.getQuantityStock(), updatedProduct.getAtivo());
+        return new ProductResponseDTO(updatedProduct.getId(), updatedProduct.getImg(), updatedProduct.getName(), updatedProduct.getDescription(), updatedProduct.getPrice(), updatedProduct.getQuantityStock(), updatedProduct.getAtivo());
 
     }
 

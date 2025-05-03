@@ -1,9 +1,11 @@
 package com.shop.cleaning.dev.services;
 
-import com.shop.cleaning.dev.dtos.requestDtos.DtoClientRequest;
-import com.shop.cleaning.dev.dtos.responseDtos.ClientUpdateDtoResponse;
-import com.shop.cleaning.dev.dtos.responseDtos.DtoClientResponse;
+import com.shop.cleaning.dev.dtos.requestDtos.ClientRequestDTO;
+import com.shop.cleaning.dev.dtos.responseDtos.ClientUpdateResponseDTO;
+import com.shop.cleaning.dev.dtos.responseDtos.ClientResponseDTO;
+import com.shop.cleaning.dev.entities.Cart;
 import com.shop.cleaning.dev.entities.Client;
+import com.shop.cleaning.dev.repositories.CartRepository;
 import com.shop.cleaning.dev.repositories.ClientRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -15,52 +17,80 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-
 @Service
 public class ClientService {
 
     private final ClientRepository clientRepository;
+    private final CartRepository cartRepository;
 
     @Autowired
-    public ClientService(ClientRepository clientRepository) {
+    public ClientService(ClientRepository clientRepository, CartRepository cartRepository) {
         this.clientRepository = clientRepository;
-
+        this.cartRepository = cartRepository;
     }
 
-
-    //criar o client
+    // Criar o client e também o cart associado
     @Transactional
-    public UUID createClient(DtoClientRequest request) {
+    public UUID createClient(ClientRequestDTO request) {
         Client client = new Client(UUID.randomUUID(), request.name(), request.address(), Instant.now(), null);
-        var userSaved = clientRepository.save(client);
-        return userSaved.getId();
+        var savedClient = clientRepository.save(client);
+
+        // Cria o carrinho vinculado ao cliente
+        Cart cart = new Cart();
+        cart.setClient(savedClient);
+        cartRepository.save(cart);
+
+        return savedClient.getId();
     }
 
-    //Buscar o cliente pelo o id
-    public DtoClientResponse getClientInfoById(UUID clientId) {
+    // Buscar o cliente pelo ID e retornar também o ID do cart
+    public ClientResponseDTO getClientInfoById(UUID clientId) {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new RuntimeException("Client not found"));
 
-        return new DtoClientResponse(client.getId(), client.getName(), client.getAddress(), client.getCreationTimesStamp(), client.getUpdateTimesStamp());
+        // Busca o carrinho do cliente
+        Cart cart = cartRepository.findByClientId(client.getId())
+                .orElseThrow(() -> new RuntimeException("Cart not found for this client"));
+
+        return new ClientResponseDTO(
+                client.getId(),
+                client.getName(),
+                client.getAddress(),
+                client.getCreationTimesStamp(),
+                client.getUpdateTimesStamp(),
+                cart.getId() // retorna apenas o ID do carrinho
+        );
     }
 
-    //Buscar todos os clientes "cadastrados"
-    public List<DtoClientResponse> getAllClients() {
-        return clientRepository.findAll().stream()
-                .map(client -> new DtoClientResponse(client.getId(), client.getName(), client.getAddress(), client.getCreationTimesStamp(), client.getUpdateTimesStamp()))
-                .collect(Collectors.toList());
+    // Buscar todos os clientes
+    public List<ClientResponseDTO> getAllClients() {
+        return clientRepository.findAll().stream().map(client -> {
+            UUID cartId = cartRepository.findByClientId(client.getId())
+                    .map(Cart::getId)
+                    .orElse(null);
+
+            return new ClientResponseDTO(
+                    client.getId(),
+                    client.getName(),
+                    client.getAddress(),
+                    client.getCreationTimesStamp(),
+                    client.getUpdateTimesStamp(),
+                    cartId
+            );
+        }).collect(Collectors.toList());
     }
-    public ClientUpdateDtoResponse updateClients(UUID uuid, DtoClientRequest request) {
-        Client client = clientRepository.findById(uuid).orElseThrow(() -> new RuntimeException("Client not found"));
+
+    public ClientUpdateResponseDTO updateClients(UUID uuid, ClientRequestDTO request) {
+        Client client = clientRepository.findById(uuid)
+                .orElseThrow(() -> new RuntimeException("Client not found"));
 
         client.setName(request.name());
         client.setAddress(request.address());
         Client updatedClient = clientRepository.save(client);
 
-        return new ClientUpdateDtoResponse(updatedClient.getId(), updatedClient.getName(), updatedClient.getAddress());
+        return new ClientUpdateResponseDTO(updatedClient.getId(), updatedClient.getName(), updatedClient.getAddress());
     }
 
-    //deletar cliente pelo id
     @Transactional
     public void deleteClientById(UUID clientId) {
         if (!clientRepository.existsById(clientId)) {
@@ -68,7 +98,4 @@ public class ClientService {
         }
         clientRepository.deleteById(clientId);
     }
-
-
 }
-
