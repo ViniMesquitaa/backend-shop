@@ -1,4 +1,9 @@
 package com.shop.cleaning.dev.repositories;
 
-public interface OrderRepo {
+import com.shop.cleaning.dev.entities.Order;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface OrderRepo extends JpaRepository<Order, Long> {
 }
