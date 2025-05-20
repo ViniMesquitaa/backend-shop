@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("product")
+@CrossOrigin(origins = "http://localhost:5173")
 public class ProductController {
     private final ProductService productService;
 
@@ -43,6 +44,13 @@ public class ProductController {
         List<ProductResponseDto> products = productService.getAllProductsActive();
         return ResponseEntity.ok(products);
     }
+
+    @GetMapping("/inactive")
+    public ResponseEntity<List<ProductResponseDto>> getInactiveProducts() {
+        List<ProductResponseDto> products = productService.getAllProductsInactive();
+        return ResponseEntity.ok(products);
+    }
+
 
 
     @PutMapping("/activate/{id}")

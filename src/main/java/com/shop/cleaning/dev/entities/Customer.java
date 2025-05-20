@@ -22,6 +22,8 @@ public class Customer {
     @Embedded
     private Address address;
 
+    private String numberPhone;
+
     @CreationTimestamp
     private Instant createTime;
     @UpdateTimestamp
@@ -39,9 +41,10 @@ public class Customer {
     }
 
 
-    public Customer(UUID id, String fullName, Address address, Instant createTime, Instant updateTime) {
+    public Customer(UUID id, String fullName, String numberPhone, Address address, Instant createTime, Instant updateTime) {
         this.id = id;
         this.fullName = fullName;
+        this.numberPhone = numberPhone;
         this.address = address;
         this.createTime = Instant.now();
         this.updateTime = Instant.now();
@@ -101,5 +104,13 @@ public class Customer {
 
     public void setCarts(List<Cart> carts) {
         this.carts = carts;
+    }
+
+    public String getNumberPhone() {
+        return numberPhone;
+    }
+
+    public void setNumberPhone(String numberPhone) {
+        this.numberPhone = numberPhone;
     }
 }

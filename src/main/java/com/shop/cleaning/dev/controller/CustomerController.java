@@ -14,6 +14,8 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/customer")
+@CrossOrigin(origins = "http://localhost:5173")
+
 public class CustomerController {
     CustomerService customerService;
     public CustomerController(CustomerService customerService) {
@@ -48,6 +50,12 @@ public class CustomerController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomerById(@PathVariable UUID id) {
         customerService.deleteCustomerById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/deleteall")
+    public ResponseEntity<Void> deleteAllCustomers() {
+        customerService.deleteCustomerAll();
         return ResponseEntity.noContent().build();
     }
 

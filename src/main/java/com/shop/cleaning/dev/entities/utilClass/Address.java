@@ -10,6 +10,7 @@ import lombok.Setter;
 
 @Embeddable
 public class Address {
+    @NotBlank
     private String cep;
     @NotBlank
     private String street;

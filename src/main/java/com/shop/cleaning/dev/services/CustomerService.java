@@ -26,14 +26,14 @@ public class CustomerService {
 
     @Transactional
     public UUID createCustomer(CustomerRequestDto customerRequestDto) {
-        Customer customer = new Customer(UUID.randomUUID(), customerRequestDto.fullName(), customerRequestDto.address(), Instant.now(), null);
+        Customer customer = new Customer(UUID.randomUUID(), customerRequestDto.fullName(), customerRequestDto.phoneNumber(), customerRequestDto.address(), Instant.now(), null);
         var savedCustomer = customerRepo.save(customer);
         return savedCustomer.getId();
     }
 
     public CustomerResponseDto getCustomerById(UUID id) {
         Customer customer = customerRepo.findById(id).orElseThrow(() -> new RuntimeException("Customer not found"));
-        return new CustomerResponseDto(customer.getId(), customer.getFullName(), customer.getAddress(), customer.getCreateTime(), customer.getUpdateTime());
+        return new CustomerResponseDto(customer.getId(), customer.getFullName(), customer.getNumberPhone(), customer.getAddress(), customer.getCreateTime(), customer.getUpdateTime());
     }
 
     public List<CustomerResponseDto> getCustomerAll() {
@@ -41,6 +41,7 @@ public class CustomerService {
                 .map(customer -> new CustomerResponseDto(
                         customer.getId(),
                         customer.getFullName(),
+                        customer.getNumberPhone(),
                         customer.getAddress(),
                         customer.getCreateTime(),
                         customer.getUpdateTime()
@@ -55,7 +56,7 @@ public class CustomerService {
         customer.setAddress(customerRequestDto.address());
         var updatedCustomer = customerRepo.save(customer);
 
-        return new CustomerUpdateResponseDto(updatedCustomer.getId(), updatedCustomer.getFullName(), updatedCustomer.getAddress());
+        return new CustomerUpdateResponseDto(updatedCustomer.getId(), updatedCustomer.getFullName(), updatedCustomer.getNumberPhone(), updatedCustomer.getAddress());
     }
 
     @Transactional
@@ -64,6 +65,11 @@ public class CustomerService {
             throw new EntityNotFoundException("Customer not found");
         }
         customerRepo.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteCustomerAll(){
+        customerRepo.deleteAll();
     }
 
 

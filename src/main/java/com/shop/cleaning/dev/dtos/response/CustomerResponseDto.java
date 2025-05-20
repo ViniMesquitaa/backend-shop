@@ -7,6 +7,7 @@ import java.util.UUID;
 
 public record CustomerResponseDto(UUID id,
                                   String fullName,
+                                  String numberPhone,
                                   Address address,
                                   Instant createTime,
                                   Instant updateTime) {

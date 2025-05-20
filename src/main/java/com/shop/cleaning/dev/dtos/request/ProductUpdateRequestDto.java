@@ -6,10 +6,12 @@ import org.antlr.v4.runtime.misc.DoubleKeyMap;
 
 import java.math.BigDecimal;
 
-public record ProductUpdateRequestDto(      @NotBlank String name,
+public record ProductUpdateRequestDto(  
+                                            @NotBlank String name,
+                                            @NotBlank String category,
                                             @NotBlank String description,
                                             @NotBlank String img,
                                             @NotNull Double price,
                                             @NotNull Integer stock,
-                                            @NotNull Boolean ativo) {
+                                            @NotNull Boolean active) {
 }

@@ -17,6 +17,7 @@ public class Product {
 
     private String img;
     private String name;
+    private String category;
     private String description;
     private Double price;
     private Integer stock;
@@ -26,10 +27,11 @@ public class Product {
     @UpdateTimestamp
     private Instant updateTime;
 
-    public Product(String id, String img, String name, String description, Double price, Integer stock, Boolean active, Instant createTime, Instant updateTime) {
+    public Product(String id, String img, String name, String category, String description, Double price, Integer stock, Boolean active, Instant createTime, Instant updateTime) {
         this.id = id;
         this.img = img;
         this.name = name;
+        this.category = category;
         this.description = description;
         this.price = price;
         this.stock = stock;
@@ -40,6 +42,14 @@ public class Product {
 
     public Product() {
 
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getId() {

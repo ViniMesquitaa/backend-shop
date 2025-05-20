@@ -45,25 +45,29 @@ public class ProductService {
     public ProductResponseDto addProduct(ProductRequestDto productRequestDto) {
         String generatedId = generateUniqueProductId();
 
-        Product product = new Product(generatedId, productRequestDto.img(), productRequestDto.name(), productRequestDto.description(), productRequestDto.price(), productRequestDto.stock(), productRequestDto.active(), Instant.now(), null);
+        Product product = new Product(generatedId, productRequestDto.img(), productRequestDto.name(), productRequestDto.category(), productRequestDto.description(), productRequestDto.price(), productRequestDto.stock(), productRequestDto.active(), Instant.now(), null);
 
         var productSaved = productRepo.save(product);
 
-        return new ProductResponseDto(productSaved.getId(), productSaved.getImg(), productSaved.getName(), productSaved.getDescription(), productSaved.getPrice(), productSaved.getStock(), productSaved.getActive(), productSaved.getCreateTime(), null);
+        return new ProductResponseDto(productSaved.getId(), productSaved.getImg(), productSaved.getName(), productSaved.getDescription(), productSaved.getCategory(), productSaved.getPrice(), productSaved.getStock(), productSaved.getActive(), productSaved.getCreateTime(), null);
     }
 
 
     public ProductResponseDto getProductById(String id) {
         var product = productRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Product not found"));
-        return new ProductResponseDto(product.getId(), product.getImg(), product.getName(), product.getDescription(), product.getPrice(), product.getStock(), product.getActive(), product.getCreateTime(), null);
+        return new ProductResponseDto(product.getId(), product.getImg(), product.getName(), product.getDescription(),product.getCategory() ,product.getPrice(), product.getStock(), product.getActive(), product.getCreateTime(), null);
     }
 
     public List<ProductResponseDto> getAllProducts() {
-        return productRepo.findAll().stream().map(product -> new ProductResponseDto(product.getId(), product.getImg(), product.getName(), product.getDescription(), product.getPrice(), product.getStock(), product.getActive(), product.getCreateTime(), product.getUpdateTime())).collect(Collectors.toList());
+        return productRepo.findAll().stream().map(product -> new ProductResponseDto(product.getId(), product.getImg(), product.getName(), product.getDescription(), product.getDescription(),  product.getPrice(), product.getStock(), product.getActive(), product.getCreateTime(), product.getUpdateTime())).collect(Collectors.toList());
     }
 
     public List<ProductResponseDto> getAllProductsActive() {
-        return productRepo.findAllByActiveTrue().stream().map(product -> new ProductResponseDto(product.getId(), product.getImg(), product.getName(), product.getDescription(), product.getPrice(), product.getStock(), product.getActive(), product.getCreateTime(), product.getUpdateTime())).collect(Collectors.toList());
+        return productRepo.findAllByActiveTrue().stream().map(product -> new ProductResponseDto(product.getId(), product.getImg(), product.getName(), product.getDescription(),  product.getCategory(), product.getPrice(), product.getStock(), product.getActive(), product.getCreateTime(), product.getUpdateTime())).collect(Collectors.toList());
+    }
+
+    public List<ProductResponseDto> getAllProductsInactive() {
+        return productRepo.findAllByActiveFalse().stream().map(product -> new ProductResponseDto(product.getId(), product.getImg(), product.getName(), product.getDescription(), product.getCategory(), product.getPrice(), product.getStock(), product.getActive(), product.getCreateTime(), product.getUpdateTime())).collect(Collectors.toList());
     }
 
 
@@ -74,13 +78,15 @@ public class ProductService {
         Product product = productRepo.findById(id).orElseThrow(() -> new RuntimeException("Product Not Found"));
         product.setImg(productUpdateDtoRequest.img());
         product.setName(productUpdateDtoRequest.name());
+        product.setCategory(productUpdateDtoRequest.category());
         product.setDescription(productUpdateDtoRequest.description());
         product.setPrice(productUpdateDtoRequest.price());
         product.setStock(productUpdateDtoRequest.stock());
+        product.setActive(productUpdateDtoRequest.active());
 
         Product updatedProduct = productRepo.save(product);
 
-        return new ProductResponseDto(updatedProduct.getId(), updatedProduct.getImg(), updatedProduct.getName(), updatedProduct.getDescription(), updatedProduct.getPrice(), updatedProduct.getStock(), updatedProduct.getActive(), updatedProduct.getCreateTime(), updatedProduct.getUpdateTime());
+        return new ProductResponseDto(updatedProduct.getId(), updatedProduct.getImg(), updatedProduct.getName(), updatedProduct.getCategory(), updatedProduct.getDescription(), updatedProduct.getPrice(), updatedProduct.getStock(), updatedProduct.getActive(), updatedProduct.getCreateTime(), updatedProduct.getUpdateTime());
 
     }
 

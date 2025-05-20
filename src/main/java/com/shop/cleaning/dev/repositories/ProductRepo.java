@@ -14,4 +14,5 @@ public interface ProductRepo extends JpaRepository<Product, String> {
     String findMaxId();
 
     List<Product> findAllByActiveTrue();
+    List<Product> findAllByActiveFalse();
 }
