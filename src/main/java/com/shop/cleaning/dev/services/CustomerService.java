@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,16 +25,11 @@ public class CustomerService {
         this.customerRepo = customerRepo;
     }
 
-    @Transactional
-    public UUID createCustomer(CustomerRequestDto customerRequestDto) {
-        Customer customer = new Customer(UUID.randomUUID(), customerRequestDto.fullName(), customerRequestDto.phoneNumber(), customerRequestDto.address(), Instant.now(), null);
-        var savedCustomer = customerRepo.save(customer);
-        return savedCustomer.getId();
-    }
 
     public CustomerResponseDto getCustomerById(UUID id) {
         Customer customer = customerRepo.findById(id).orElseThrow(() -> new RuntimeException("Customer not found"));
-        return new CustomerResponseDto(customer.getId(), customer.getFullName(), customer.getNumberPhone(), customer.getAddress(), customer.getCreateTime(), customer.getUpdateTime());
+
+        return new CustomerResponseDto(customer.getId(), customer.getFullName(), customer.getPhoneNumber(), customer.getAddress(), customer.getUserName(), customer.getPassword(), customer.getCreateTime(), customer.getUpdateTime());
     }
 
     public List<CustomerResponseDto> getCustomerAll() {
@@ -41,11 +37,13 @@ public class CustomerService {
                 .map(customer -> new CustomerResponseDto(
                         customer.getId(),
                         customer.getFullName(),
-                        customer.getNumberPhone(),
+                        customer.getPhoneNumber(),
                         customer.getAddress(),
+                        customer.getUserName(),
+                        customer.getPassword(),
                         customer.getCreateTime(),
                         customer.getUpdateTime()
-                ))
+                      ))
                 .collect(Collectors.toList());
     }
 
@@ -56,7 +54,7 @@ public class CustomerService {
         customer.setAddress(customerRequestDto.address());
         var updatedCustomer = customerRepo.save(customer);
 
-        return new CustomerUpdateResponseDto(updatedCustomer.getId(), updatedCustomer.getFullName(), updatedCustomer.getNumberPhone(), updatedCustomer.getAddress());
+        return new CustomerUpdateResponseDto(updatedCustomer.getId(), updatedCustomer.getFullName(), updatedCustomer.getPhoneNumber(), updatedCustomer.getAddress(), updatedCustomer.getUserName(), updatedCustomer.getPassword());
     }
 
     @Transactional
@@ -71,6 +69,7 @@ public class CustomerService {
     public void deleteCustomerAll(){
         customerRepo.deleteAll();
     }
+
 
 
 

@@ -49,25 +49,25 @@ public class ProductService {
 
         var productSaved = productRepo.save(product);
 
-        return new ProductResponseDto(productSaved.getId(), productSaved.getImg(), productSaved.getName(), productSaved.getDescription(), productSaved.getCategory(), productSaved.getPrice(), productSaved.getStock(), productSaved.getActive(), productSaved.getCreateTime(), null);
+        return new ProductResponseDto(productSaved.getId(), productSaved.getImg(), productSaved.getName(), productSaved.getCategory(), productSaved.getDescription(),  productSaved.getPrice(), productSaved.getStock(), productSaved.getActive(), productSaved.getCreateTime(), null);
     }
 
 
     public ProductResponseDto getProductById(String id) {
         var product = productRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Product not found"));
-        return new ProductResponseDto(product.getId(), product.getImg(), product.getName(), product.getDescription(),product.getCategory() ,product.getPrice(), product.getStock(), product.getActive(), product.getCreateTime(), null);
+        return new ProductResponseDto(product.getId(), product.getImg(), product.getName(), product.getCategory(), product.getDescription() ,product.getPrice(), product.getStock(), product.getActive(), product.getCreateTime(), null);
     }
 
     public List<ProductResponseDto> getAllProducts() {
-        return productRepo.findAll().stream().map(product -> new ProductResponseDto(product.getId(), product.getImg(), product.getName(), product.getDescription(), product.getDescription(),  product.getPrice(), product.getStock(), product.getActive(), product.getCreateTime(), product.getUpdateTime())).collect(Collectors.toList());
+        return productRepo.findAll().stream().map(product -> new ProductResponseDto(product.getId(), product.getImg(), product.getName(), product.getCategory(), product.getDescription(),  product.getPrice(), product.getStock(), product.getActive(), product.getCreateTime(), product.getUpdateTime())).collect(Collectors.toList());
     }
 
     public List<ProductResponseDto> getAllProductsActive() {
-        return productRepo.findAllByActiveTrue().stream().map(product -> new ProductResponseDto(product.getId(), product.getImg(), product.getName(), product.getDescription(),  product.getCategory(), product.getPrice(), product.getStock(), product.getActive(), product.getCreateTime(), product.getUpdateTime())).collect(Collectors.toList());
+        return productRepo.findAllByActiveTrue().stream().map(product -> new ProductResponseDto(product.getId(), product.getImg(), product.getName(), product.getCategory(), product.getDescription(),   product.getPrice(), product.getStock(), product.getActive(), product.getCreateTime(), product.getUpdateTime())).collect(Collectors.toList());
     }
 
     public List<ProductResponseDto> getAllProductsInactive() {
-        return productRepo.findAllByActiveFalse().stream().map(product -> new ProductResponseDto(product.getId(), product.getImg(), product.getName(), product.getDescription(), product.getCategory(), product.getPrice(), product.getStock(), product.getActive(), product.getCreateTime(), product.getUpdateTime())).collect(Collectors.toList());
+        return productRepo.findAllByActiveFalse().stream().map(product -> new ProductResponseDto(product.getId(), product.getImg(), product.getName(),  product.getCategory(), product.getDescription(), product.getPrice(), product.getStock(), product.getActive(), product.getCreateTime(), product.getUpdateTime())).collect(Collectors.toList());
     }
 
 
