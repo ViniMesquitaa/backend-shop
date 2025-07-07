@@ -7,6 +7,7 @@ import com.shop.cleaning.dev.services.CustomerService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -20,12 +21,6 @@ public class CustomerController {
     CustomerService customerService;
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
-    }
-
-    @PostMapping
-    public ResponseEntity<CustomerRequestDto> registerCustomer(@Valid @RequestBody CustomerRequestDto customerRequestDto) {
-        var customerId = customerService.createCustomer(customerRequestDto);
-        return ResponseEntity.created(URI.create("/customer" + customerId.toString())).build();
     }
 
     @GetMapping("/{id}")
